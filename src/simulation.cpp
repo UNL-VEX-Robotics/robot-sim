@@ -1,5 +1,4 @@
 #include "simulation.hpp"
-#include "button.hpp"
 
 using json = nlohmann::json;
 
@@ -24,6 +23,8 @@ Simulation::Simulation()
         return;
     }
 
+    // Configuration loading with error handling
+
     if (config.contains("Mode") && config["Mode"].is_string())
         mode = config["Mode"];
     else
@@ -39,9 +40,11 @@ Simulation::Simulation()
 
 void Simulation::run()
 {
+    // Main window
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Robot Simulator", sf::Style::None, sf::State::Fullscreen);
     window.setFramerateLimit(framerate);
 
+    // Fonts
     sf::Font font("assets/fonts/Arial-Rounded.ttf");
 
     Button button(

@@ -92,19 +92,21 @@ Button::Button(
     unsigned int characterSize,
     float radius,
     std::size_t cornerPointCount)
-    : shape(RoundedRectangleShape(size, radius, cornerPointCount)), 
+    : body(RoundedRectangleShape(size, radius, cornerPointCount)), 
       text(font, text, characterSize), 
       fillColor(fillColor),
       hovered(false)
 {
-    this->shape.setFillColor(fillColor);
+    this->body.setFillColor(fillColor);
     this->text.setFillColor(textColor);
 
+    // Check if hover color exists
     if (hoverColor != sf::Color::Transparent)
         this->hoverColor = hoverColor;
     else
         this->hoverColor = fillColor;
 
+    // Text centering
     sf::FloatRect textBounds = this->text.getLocalBounds();
 
     this->text.setOrigin({
@@ -122,6 +124,7 @@ void Button::setText(const std::string &text)
 {
     this->text.setString(text);
 
+    // Text centering
     sf::FloatRect textBounds = this->text.getLocalBounds();
 
     this->text.setOrigin({
@@ -153,7 +156,7 @@ void Button::setHoverColor(sf::Color color)
 bool Button::isHovered(const sf::Vector2f& mousePos)
 {
 
-   hovered = this->shape.getGlobalBounds().contains(mousePos);
+   hovered = this->body.getGlobalBounds().contains(mousePos);
    return hovered;
 }
 
@@ -161,9 +164,9 @@ void Button::draw(
     sf::RenderTarget &target, 
     sf::RenderStates states) const
 {
-    const_cast<RoundedRectangleShape&>(this->shape).setFillColor(hovered ? hoverColor : fillColor);
-    states.transform *= this->shape.getTransform();
+    const_cast<RoundedRectangleShape&>(this->body).setFillColor(hovered ? hoverColor : fillColor);
+    states.transform *= this->body.getTransform();
 
-    target.draw(this->shape, states);
+    target.draw(this->body, states);
     target.draw(this->text, states);
 }
