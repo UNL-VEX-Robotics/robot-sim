@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "button.hpp"
+#include "font_manager.hpp"
 
 class Simulation
 {

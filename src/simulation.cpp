@@ -45,10 +45,9 @@ void Simulation::run()
     window.setFramerateLimit(framerate);
 
     // Fonts
-    sf::Font font("assets/fonts/Arial-Rounded.ttf");
 
     Button button(
-        font, 
+        FontManager::getFont("Arial-Rounded", "assets/fonts/Arial-Rounded.ttf"), 
         "Close X", 
         {200.f, 50.f}, 
         sf::Color::Red, 
