@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "main.hpp"
 
 class RoundedRectangleShape : public sf::Shape
 {
@@ -82,6 +82,8 @@ public:
         unsigned int characterSize = 30,
         float radius = 0.f,
         std::size_t cornerPointCount = 8);
+
+    Button(std::string buttonName);
 
     /// @brief Sets the text for the button.
     /// @param text const std::string & representing the text for the button

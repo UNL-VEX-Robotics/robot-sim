@@ -1,0 +1,45 @@
+{
+    "Close Button": 
+    {
+        "Font":
+        {
+            "Name": "Arial-Rounded",
+            "Path": "assets/fonts/Arial-Rounded.ttf",
+            "Text": "Close X",
+            "Color":
+            {
+                "R": 255,
+                "G": 255,
+                "B": 255
+            },
+            "Size": 24
+        },
+        "Shape":
+        {
+            "Size":
+            {
+                "Width": 200,
+                "Height": 50
+            },
+            "Position":
+            {
+                "X": 0,
+                "Y": 0
+            },
+            "Color":
+            {
+                "R": 255,
+                "G": 0,
+                "B": 0
+            },
+            "Hover Color":
+            {
+                "R": 200,
+                "G": 0,
+                "B": 0
+            },
+            "Radius": 10,
+            "Corner Point Count": 8
+        }
+    }
+}

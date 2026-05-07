@@ -8,8 +8,7 @@ Simulation::Simulation()
 
     if (!file.is_open())
     {
-        std::cerr << "Failed to open config.json" << std::endl;
-        return;
+        throw std::runtime_error("Failed to open config.json");
     }
 
     json config;
@@ -19,8 +18,7 @@ Simulation::Simulation()
     }
     catch (const json::parse_error &e)
     {
-        std::cerr << "Failed to parse config.json: " << e.what() << std::endl;
-        return;
+        throw std::runtime_error("Failed to parse config.json: " + std::string(e.what()));
     }
 
     // Configuration loading with error handling
@@ -28,14 +26,19 @@ Simulation::Simulation()
     if (config.contains("Mode") && config["Mode"].is_string())
         mode = config["Mode"];
     else
-        std::cerr << "Mode not found or not a string in config.json" << std::endl;
+        throw std::runtime_error("Mode not found or not a string in config.json");
 
     if (config.contains("Framerate") && config["Framerate"].is_number_unsigned())
+    {
         framerate = config["Framerate"];
+    }
     else
-        std::cerr << "Framerate not found or not an unsigned number in config.json" << std::endl;
+    {
+        std::cerr << "Framerate not found or not a number in config.json, defaulting to 100" << std::endl;
+        framerate = 100;
+    }
 
-    std::cout << "Simulation initialized with mode: " << mode << "." << std::endl;
+    std::cout << "Simulation initialized with mode: " << mode << " and framerate: " << framerate << "." << std::endl;
 }
 
 void Simulation::run()
@@ -44,19 +47,7 @@ void Simulation::run()
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Robot Simulator", sf::Style::None, sf::State::Fullscreen);
     window.setFramerateLimit(framerate);
 
-    // Fonts
-
-    Button button(
-        FontManager::getFont("Arial-Rounded", "assets/fonts/Arial-Rounded.ttf"), 
-        "Close X", 
-        {200.f, 50.f}, 
-        sf::Color::Red, 
-        sf::Color::White, 
-        sf::Color(200, 0, 0), 
-        30, 
-        10.f, 
-        8
-    );
+    Button button("Close Button");
 
     while (window.isOpen())
     {

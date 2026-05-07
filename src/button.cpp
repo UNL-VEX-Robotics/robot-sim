@@ -120,6 +120,79 @@ Button::Button(
     });
 }
 
+Button::Button(std::string buttonName)
+: body(RoundedRectangleShape({0.f, 0.f}, 0.f, 0)), 
+  text(FontManager::getFont("DEFAULT_FONT"))
+{
+    using json = nlohmann::json;
+
+    std::ifstream file("elements.json");
+    if (!file.is_open())
+        throw std::runtime_error("Failed to open elements.json");
+
+    json elements;
+    try
+    {
+        file >> elements;
+    }
+    catch (const json::parse_error &e)
+    {
+        throw std::runtime_error("Failed to parse elements.json: " + std::string(e.what()));
+    }    
+
+    if (!elements.contains(buttonName) || !elements[buttonName].is_object())
+        throw std::runtime_error("Button " + buttonName + " not found or not an object in elements.json");
+
+    // Body configuration
+    sf::Vector2f size = {
+        elements[buttonName]["Shape"]["Size"]["Width"],
+        elements[buttonName]["Shape"]["Size"]["Height"]
+    };
+    body.setSize(size);
+    body.setPosition({
+        elements[buttonName]["Shape"]["Position"]["X"].get<float>(),
+        elements[buttonName]["Shape"]["Position"]["Y"].get<float>()
+    });
+    this->fillColor = sf::Color(
+        elements[buttonName]["Shape"]["Color"]["R"].get<std::uint8_t>(),
+        elements[buttonName]["Shape"]["Color"]["G"].get<std::uint8_t>(),
+        elements[buttonName]["Shape"]["Color"]["B"].get<std::uint8_t>()
+    );
+    this->hoverColor = sf::Color(
+        elements[buttonName]["Shape"]["Hover Color"]["R"].get<std::uint8_t>(),
+        elements[buttonName]["Shape"]["Hover Color"]["G"].get<std::uint8_t>(),
+        elements[buttonName]["Shape"]["Hover Color"]["B"].get<std::uint8_t>()
+    );
+    body.setCornersRadius(elements[buttonName]["Shape"]["Radius"].get<float>());
+    body.setCornerPointCount(elements[buttonName]["Shape"]["Corner Point Count"].get<std::size_t>());
+
+    // Text configuration
+    text.setFont(FontManager::getFont(
+        elements[buttonName]["Font"]["Name"].get<std::string>(),
+        elements[buttonName]["Font"]["Path"].get<std::string>()
+    ));
+    text.setString(elements[buttonName]["Font"]["Text"].get<std::string>());
+    text.setCharacterSize(elements[buttonName]["Font"]["Size"].get<unsigned int>());
+    text.setFillColor(sf::Color(
+        elements[buttonName]["Font"]["Color"]["R"].get<std::uint8_t>(),
+        elements[buttonName]["Font"]["Color"]["G"].get<std::uint8_t>(),
+        elements[buttonName]["Font"]["Color"]["B"].get<std::uint8_t>()
+    ));
+
+    // Text centering
+    sf::FloatRect textBounds = this->text.getLocalBounds();
+
+    this->text.setOrigin({
+        textBounds.position.x + textBounds.size.x / 2.f,
+        textBounds.position.y + textBounds.size.y / 2.f
+    });
+
+    this->text.setPosition({
+        size.x / 2.f,
+        size.y / 2.f
+    });
+}
+
 void Button::setText(const std::string &text)
 {
     this->text.setString(text);

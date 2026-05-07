@@ -1,8 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <string>
-#include <unordered_map>
+#include "main.hpp"
 
 /// @brief Static class to manage fonts in the application, allowing for loading and retrieving fonts by name.
 class FontManager

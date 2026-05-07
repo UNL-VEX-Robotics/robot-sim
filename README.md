@@ -78,3 +78,6 @@ This task builds the project into a single `.exe` file. By making the task the d
 ```
 Example Run task.  
 This task will call the build task and then launch the resulting `.exe` file.
+
+## elements.json
+You can configure the different elements (buttons, etc) using JSON. You still need to call the constructor using the the title of the object, but the other information will automatically get read from the JSON file.

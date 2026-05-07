@@ -1,12 +1,6 @@
 #pragma once
 
-#include <fstream>
-#include <iostream>
-#include <nlohmann/json.hpp>
-#include <SFML/Graphics.hpp>
-
-#include "button.hpp"
-#include "font_manager.hpp"
+#include "main.hpp"
 
 class Simulation
 {
