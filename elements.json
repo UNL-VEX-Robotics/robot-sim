@@ -18,12 +18,12 @@
         {
             "Size":
             {
-                "Width": 200,
-                "Height": 50
+                "Width": 100,
+                "Height": 40
             },
             "Position":
             {
-                "X": 0,
+                "X": 1820,
                 "Y": 0
             },
             "Color":

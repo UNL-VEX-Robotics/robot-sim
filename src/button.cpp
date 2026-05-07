@@ -107,17 +107,7 @@ Button::Button(
         this->hoverColor = fillColor;
 
     // Text centering
-    sf::FloatRect textBounds = this->text.getLocalBounds();
-
-    this->text.setOrigin({
-        textBounds.position.x + textBounds.size.x / 2.f,
-        textBounds.position.y + textBounds.size.y / 2.f
-    });
-
-    this->text.setPosition({
-        size.x / 2.f,
-        size.y / 2.f
-    });
+    this->setText(text);
 }
 
 Button::Button(std::string buttonName)
@@ -171,26 +161,13 @@ Button::Button(std::string buttonName)
         elements[buttonName]["Font"]["Name"].get<std::string>(),
         elements[buttonName]["Font"]["Path"].get<std::string>()
     ));
-    text.setString(elements[buttonName]["Font"]["Text"].get<std::string>());
     text.setCharacterSize(elements[buttonName]["Font"]["Size"].get<unsigned int>());
     text.setFillColor(sf::Color(
         elements[buttonName]["Font"]["Color"]["R"].get<std::uint8_t>(),
         elements[buttonName]["Font"]["Color"]["G"].get<std::uint8_t>(),
         elements[buttonName]["Font"]["Color"]["B"].get<std::uint8_t>()
     ));
-
-    // Text centering
-    sf::FloatRect textBounds = this->text.getLocalBounds();
-
-    this->text.setOrigin({
-        textBounds.position.x + textBounds.size.x / 2.f,
-        textBounds.position.y + textBounds.size.y / 2.f
-    });
-
-    this->text.setPosition({
-        size.x / 2.f,
-        size.y / 2.f
-    });
+    this->setText(elements[buttonName]["Font"]["Text"].get<std::string>());
 }
 
 void Button::setText(const std::string &text)
@@ -203,6 +180,13 @@ void Button::setText(const std::string &text)
     this->text.setOrigin({
         textBounds.position.x + textBounds.size.x / 2.f,
         textBounds.position.y + textBounds.size.y / 2.f
+    });
+
+    sf::Vector2f size = this->body.getSize();
+
+    this->text.setPosition({
+        size.x / 2.f,
+        size.y / 2.f
     });
 }
 
@@ -228,7 +212,6 @@ void Button::setHoverColor(sf::Color color)
 
 bool Button::isHovered(const sf::Vector2f& mousePos)
 {
-
    hovered = this->body.getGlobalBounds().contains(mousePos);
    return hovered;
 }
@@ -238,8 +221,8 @@ void Button::draw(
     sf::RenderStates states) const
 {
     const_cast<RoundedRectangleShape&>(this->body).setFillColor(hovered ? hoverColor : fillColor);
-    states.transform *= this->body.getTransform();
-
     target.draw(this->body, states);
+
+    states.transform *= this->body.getTransform();
     target.draw(this->text, states);
 }

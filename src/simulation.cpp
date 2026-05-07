@@ -46,6 +46,8 @@ void Simulation::run()
     // Main window
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Robot Simulator", sf::Style::None, sf::State::Fullscreen);
     window.setFramerateLimit(framerate);
+    sf::View view(sf::FloatRect({0.f, 0.f}, {1920.f, 1080.f}));
+    window.setView(view);
 
     Button button("Close Button");
 
